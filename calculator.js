@@ -64,6 +64,7 @@ class Calculator {
     // check if array contains all numbers or is empty
     isError(){
         let arr, val;
+        console.log(this.nums.length);
         if(this.nums.length === 0) { this.msg = { msg: 'numbers are required' }; return true; }
         arr = this.nums.map(item => { if(isNaN(item)) val = item; return Number(item); });
         if(val) { this.msg = { msg: `${val} is not a number` }; return true; }

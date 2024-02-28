@@ -21,15 +21,22 @@ describe("calculator", function(){
         expect(calc.mode()).toEqual('17.00');
     });
 
-    test('return null / return calculator messages', () => {
+    test('return null', () => {
         n = [17, 36, 94, 1, 20, 85, 'n', 41, 7, 68, 53, 17, 70];
         c = new Calculator(n);
         expect(c.mean()).toBeNull();
-        expect(c.msg).toEqual({'msg': 'n is not a number'});
         expect(c.median()).toBeNull();
+        expect(c.mode()).toBeNull();
+    });
+
+    test('return calculator messages', () => {
+        n = [17, 36, 94, 1, 20, 85, 'n', 41, 7, 68, 53, 17, 70];
+        c = new Calculator(n);
+        c.mean();
+        expect(c.msg).toEqual({'msg': 'n is not a number'});
         n = [];
         c = new Calculator(n);
-        expect(c.mode()).toBeNull();
+        c.median();
         expect(c.msg).toEqual({'msg': 'numbers are required'});
     });
 
