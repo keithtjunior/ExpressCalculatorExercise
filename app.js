@@ -1,7 +1,8 @@
 const express = require('express');
+const fs = require('fs');
 const Calculator = require('./calculator');
 const ExpressError = require('./expressError');
-const fs = require('fs');
+
 
 const app = express();
 const port = 3000;
@@ -23,7 +24,7 @@ app.get('/mean', function (req, res, next) {
         let calc = new Calculator(req.query.nums.replace(' ', '').split(','));
         let data = calc.mean();
         if (!data && data !== 0) throw new ExpressError(calc.msg, 400);
-        return res.send({ operation: 'mean', value: data });
+        return res.json({ operation: 'mean', value: data });
     } catch (e) {
         next(e);
     }
@@ -36,7 +37,7 @@ app.get('/median', function (req, res, next) {
         let calc = new Calculator(req.query.nums.replace(' ', '').split(','));
         let data = calc.median();
         if (!data && data !== 0) throw new ExpressError(calc.msg, 400);
-        return res.send({ operation: 'median', value: data });
+        return res.json({ operation: 'median', value: data });
     } catch (e) {
         next(e);
     }
@@ -49,7 +50,7 @@ app.get('/mode', function (req, res, next) {
         let calc = new Calculator(req.query.nums.replace(' ', '').split(','));
         let data = calc.mode();
         if (!data && data !== 0) throw new ExpressError(calc.msg, 400);
-        return res.send({ operation: 'mode', value: data });
+        return res.json({ operation: 'mode', value: data });
     } catch (e) {
         next(e);
     }
@@ -61,16 +62,16 @@ app.get('/all', async function (req, res, next) {
             throw new ExpressError('missing/invalid querystring {nums}', 400);
         let calc = new Calculator(req.query.nums.replace(' ', '').split(','));
         let mean = calc.mean();
-        let median = calc.median();
+        let median = calc.mode();
         let mode = calc.mode();
-        if (!mean && mean !== 0 &&
-            !median && median !== 0 &&
-            !mode && mode !== 0) 
+        if ((!mean && mean !== 0) ||
+            (!median && median !== 0) ||
+            (!mode && mode !== 0)) 
             throw new ExpressError(calc.msg, 400);
         let data = { operation: 'all', mean, median, mode }
         if(req.query.save && req.query.save === 'true')
             data.save = await writeJson(data);
-        return res.send(data);
+        return res.json(data);
     } catch (e) {
         next(e);
     }
