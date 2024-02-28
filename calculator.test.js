@@ -21,13 +21,12 @@ describe("calculator", function(){
         expect(calc.mode()).toEqual('17.00');
     });
 
-    test('return calculator messages', () => {
+    test('return null / return calculator messages', () => {
         n = [17, 36, 94, 1, 20, 85, 'n', 41, 7, 68, 53, 17, 70];
         c = new Calculator(n);
         expect(c.mean()).toBeNull();
         expect(c.msg).toEqual({'msg': 'n is not a number'});
         expect(c.median()).toBeNull();
-
         n = [];
         c = new Calculator(n);
         expect(c.mode()).toBeNull();
